@@ -1,7 +1,7 @@
 ﻿using Comfort.Common;
 using HarmonyLib;
-using HideoutAutomation.Helpers;
 using HideoutAutomation.Production;
+using ProductionStacking.Helpers;
 using SPT.Reflection.Patching;
 using System;
 using System.Reflection;

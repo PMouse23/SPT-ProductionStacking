@@ -3,7 +3,7 @@ using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Utils;
 using System.IO;
 
-namespace HideoutAutomation.Server.Stores
+namespace ProductionStacking.Server.Stores
 {
     [Injectable(InjectionType = InjectionType.Singleton)]
     public class JsonStore<T>(FileUtil fileUtil, JsonUtil jsonUtil)
@@ -15,12 +15,12 @@ namespace HideoutAutomation.Server.Stores
             string fullPath = Path.Combine(profileDataFilepathPrefix, profileId, fileName);
             if (fileUtil.FileExists(fullPath))
                 return jsonUtil.Deserialize<T>(fileUtil.ReadFile(fullPath));
-            return default(T);
+            return default;
         }
 
         public void Save(T obj, MongoId profileId, string fileName)
         {
-            string? json = jsonUtil.Serialize<T>(obj, true);
+            string? json = jsonUtil.Serialize(obj, true);
             if (json == null)
                 return;
             string fullPath = Path.Combine(profileDataFilepathPrefix, profileId, fileName);

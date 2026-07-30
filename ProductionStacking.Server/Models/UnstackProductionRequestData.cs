@@ -2,7 +2,7 @@
 using SPTarkov.Server.Core.Models.Utils;
 using System.Text.Json.Serialization;
 
-namespace HideoutAutomation.Server.Models
+namespace ProductionStacking.Server.Models
 {
     public record UnstackProductionRequestData : IRequestData
     {

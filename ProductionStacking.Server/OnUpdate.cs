@@ -4,10 +4,10 @@ using SPTarkov.Server.Core.Models.Spt.Config;
 using SPTarkov.Server.Core.Servers;
 using System.Threading.Tasks;
 
-namespace HideoutAutomation.Server
+namespace ProductionStacking.Server
 {
     [Injectable(TypePriority = OnLoadOrder.SaveCallbacks)]
-    public class OnUpdate(ConfigServer configServer, SaveServer saveServer, HideoutAutomationService hideoutAutomationService) : IOnUpdate
+    public class OnUpdate(ConfigServer configServer, SaveServer saveServer, ProductionStackingService hideoutAutomationService) : IOnUpdate
     {
         protected readonly HideoutConfig HideoutConfig = configServer.GetConfig<HideoutConfig>();
 
@@ -17,11 +17,8 @@ namespace HideoutAutomation.Server
                 return false;
 
             foreach (var (sessionId, profile) in saveServer.GetProfiles())
-            {
-                //HACK first few versions for compatibility.
-                hideoutAutomationService.MoveOldtoNewQueue(sessionId, profile.CharacterData?.PmcData);
                 hideoutAutomationService.UpdateProductionQueue(sessionId, profile.CharacterData?.PmcData);
-            }
+
             return true;
         }
     }

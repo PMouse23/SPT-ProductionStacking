@@ -2,7 +2,7 @@
 using EFT;
 using SPT.SinglePlayer.Utils.InRaid;
 
-namespace HideoutAutomation.Helpers
+namespace ProductionStacking.Helpers
 {
     internal static class RaidHelper
     {

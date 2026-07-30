@@ -1,8 +1,8 @@
 ﻿using Comfort.Common;
 using EFT.Hideout;
 using HarmonyLib;
-using HideoutAutomation.Helpers;
 using HideoutAutomation.Production;
+using ProductionStacking.Helpers;
 using SPT.Reflection.Patching;
 using System;
 using System.Reflection;
@@ -14,8 +14,6 @@ namespace HideoutAutomation.Patches.View
         [PatchPostfix]
         public static void PatchPostfix(ProduceView __instance)
         {
-            if (Globals.ProductionStacking == false)
-                return;
             try
             {
                 ProduceView produceView = __instance;

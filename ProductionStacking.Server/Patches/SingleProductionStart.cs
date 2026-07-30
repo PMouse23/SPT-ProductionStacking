@@ -8,7 +8,7 @@ using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Eft.Hideout;
 using System.Reflection;
 
-namespace HideoutAutomation.Server.Patches
+namespace ProductionStacking.Server.Patches
 {
     public class SingleProductionStart : AbstractPatch
     {
@@ -16,7 +16,7 @@ namespace HideoutAutomation.Server.Patches
         public static bool PatchPrefix(PmcData pmcData, HideoutSingleProductionStartRequestData request, MongoId sessionID)
         {
             bool result = true;
-            if (ServiceLocator.ServiceProvider.GetService<HideoutAutomationService>() is HideoutAutomationService automationService)
+            if (ServiceLocator.ServiceProvider.GetService<ProductionStackingService>() is ProductionStackingService automationService)
             {
                 bool shouldStack = automationService.ShouldStack(sessionID, pmcData, request);
                 if (shouldStack)

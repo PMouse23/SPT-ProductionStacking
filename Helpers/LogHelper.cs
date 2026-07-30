@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Reflection;
 using UnityEngine;
 
-namespace HideoutAutomation.Helpers
+namespace ProductionStacking.Helpers
 {
     internal static class LogHelper
     {

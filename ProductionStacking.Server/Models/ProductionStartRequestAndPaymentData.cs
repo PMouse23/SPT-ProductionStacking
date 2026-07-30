@@ -3,7 +3,7 @@ using SPTarkov.Server.Core.Models.Eft.Hideout;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace HideoutAutomation.Server.Models
+namespace ProductionStacking.Server.Models
 {
     public record ProductionStartRequestAndPaymentData
     {

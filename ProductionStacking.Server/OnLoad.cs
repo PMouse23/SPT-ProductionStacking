@@ -1,9 +1,9 @@
-﻿using HideoutAutomation.Server.Patches;
+﻿using ProductionStacking.Server.Patches;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using System.Threading.Tasks;
 
-namespace HideoutAutomation.Server
+namespace ProductionStacking.Server
 {
     [Injectable(TypePriority = OnLoadOrder.PreSptModLoader)]
     public class OnLoad() : IOnLoad
@@ -15,7 +15,6 @@ namespace HideoutAutomation.Server
             new MoveItem().Enable();
             new SingleProductionStart().Enable();
             new UnstackRewardIntoValidSize().Enable();
-            new UpgradeComplete().Enable();
 
             return Task.CompletedTask;
         }

@@ -1,8 +1,11 @@
 ﻿#nullable enable
 
-using HideoutAutomation.Helpers;
+#nullable enable
 
-namespace HideoutAutomation.Extensions
+using HideoutAutomation.Helpers;
+using ProductionStacking.Helpers;
+
+namespace ProductionStacking.Extensions
 {
     internal static class HideoutClassExtensions
     {

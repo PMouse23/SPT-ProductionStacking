@@ -1,12 +1,12 @@
 ﻿using SPTarkov.Server.Core.Models.Spt.Mod;
 using System.Collections.Generic;
 
-namespace HideoutAutomation.Server
+namespace ProductionStacking.Server
 {
     public record ModMetadata : AbstractModMetadata
     {
-        public override string ModGuid { get; init; } = "com.KnotScripts.HideoutAutomation";
-        public override string Name { get; init; } = "HideoutAutomation";
+        public override string ModGuid { get; init; } = "com.KnotScripts.ProductionStacking";
+        public override string Name { get; init; } = "ProductionStacking";
 
         public override string Author { get; init; } = "KnotScripts";
 

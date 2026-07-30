@@ -12,7 +12,7 @@ using SPTarkov.Server.Core.Models.Eft.ItemEvent;
 using System.Linq;
 using System.Reflection;
 
-namespace HideoutAutomation.Server.Patches
+namespace ProductionStacking.Server.Patches
 {
     public class MoveItem : AbstractPatch
     {

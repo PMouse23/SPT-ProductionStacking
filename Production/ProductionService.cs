@@ -1,11 +1,11 @@
 ﻿using Comfort.Common;
 using EFT;
 using EFT.Hideout;
-using HideoutAutomation.Extensions;
-using HideoutAutomation.Helpers;
 using HideoutAutomation.Production.Requests;
 using HideoutAutomation.Production.Responses;
 using Newtonsoft.Json;
+using ProductionStacking.Extensions;
+using ProductionStacking.Helpers;
 using SPT.Common.Http;
 using System;
 using System.Collections.Generic;
@@ -31,8 +31,6 @@ namespace HideoutAutomation.Production
                         Singleton<ProductionService>.Instance = null;
                         return;
                     }
-                    if (Globals.ProductionStacking == false)
-                        return;
 
                     var producer = obj;
                     EAreaType areaType = producer.AreaType;
@@ -103,7 +101,7 @@ namespace HideoutAutomation.Production
 
         public async Task<StateResponse> GetState()
         {
-            string response = await RequestHandler.GetJsonAsync("/hideoutautomation/State");
+            string response = await RequestHandler.GetJsonAsync("/ProductionStacking/State");
             if (Globals.Debug)
                 LogHelper.LogInfo($"state: {response}");
             StateResponse result = JsonConvert.DeserializeObject<StateResponse>(response);
@@ -122,7 +120,7 @@ namespace HideoutAutomation.Production
             {
                 recipeId = schemeId
             };
-            string response = await RequestHandler.PutJsonAsync("/hideoutautomation/Unstack", JsonConvert.SerializeObject(unstackProductionRequest));
+            string response = await RequestHandler.PutJsonAsync("/ProductionStacking/Unstack", JsonConvert.SerializeObject(unstackProductionRequest));
             return JsonConvert.DeserializeObject<bool>(response);
         }
 
@@ -143,7 +141,7 @@ namespace HideoutAutomation.Production
             {
                 schemeId = schemeId
             };
-            string response = RequestHandler.PutJson("/hideoutautomation/CanFindProduction", JsonConvert.SerializeObject(findProductionRequest));
+            string response = RequestHandler.PutJson("/ProductionStacking/CanFindProduction", JsonConvert.SerializeObject(findProductionRequest));
             return JsonConvert.DeserializeObject<bool>(response);
         }
 
@@ -153,7 +151,7 @@ namespace HideoutAutomation.Production
             {
                 area = areaType,
             };
-            string response = await RequestHandler.PutJsonAsync("/hideoutautomation/StartFromStack", JsonConvert.SerializeObject(nextProductionRequest));
+            string response = await RequestHandler.PutJsonAsync("/ProductionStacking/StartFromStack", JsonConvert.SerializeObject(nextProductionRequest));
             return JsonConvert.DeserializeObject<ProductionBuild>(response);
         }
 

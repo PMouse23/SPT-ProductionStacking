@@ -5,7 +5,7 @@ using System.Reflection;
 
 #nullable enable
 
-namespace HideoutAutomation.Helpers
+namespace ProductionStacking.Helpers
 {
     internal class ReflectionHelper
     {

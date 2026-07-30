@@ -5,7 +5,7 @@ using SPTarkov.Server.Core.Models.Eft.Common;
 using System;
 using System.Reflection;
 
-namespace HideoutAutomation.Server.Patches
+namespace ProductionStacking.Server.Patches
 {
     public class HandleRecipe : AbstractPatch
     {

@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace HideoutAutomation.Server.Patches
+namespace ProductionStacking.Server.Patches
 {
     public class UnstackRewardIntoValidSize : AbstractPatch
     {
@@ -25,7 +25,7 @@ namespace HideoutAutomation.Server.Patches
             PmcData? pmcData = HandleRecipe.LastCalledPmcData;
             if (pmcData == null)
                 return;
-            if (ServiceLocator.ServiceProvider.GetService<HideoutAutomationService>() is not HideoutAutomationService hideoutAutomationService)
+            if (ServiceLocator.ServiceProvider.GetService<ProductionStackingService>() is not ProductionStackingService hideoutAutomationService)
                 return;
             if (ServiceLocator.ServiceProvider.GetService<HideoutController>() is not HideoutController hideoutController)
                 return;

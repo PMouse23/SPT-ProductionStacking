@@ -7,8 +7,8 @@
     <ProjectGuid>{8C153F39-D5A5-491C-BCDE-6AF4A32925AC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HideoutAutomation</RootNamespace>
-    <AssemblyName>HideoutAutomation</AssemblyName>
+    <RootNamespace>ProductionStacking</RootNamespace>
+    <AssemblyName>ProductionStacking</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <LangVersion>latest</LangVersion>
     <FileAlignment>512</FileAlignment>
@@ -110,16 +110,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Construction\Requests\FindItemsRequest.cs" />
     <Compile Include="Extensions\HideoutClassExtensions.cs" />
     <Compile Include="Helpers\LogHelper.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Helpers\ModChecker.cs" />
     <Compile Include="Helpers\RaidHelper.cs" />
     <Compile Include="Helpers\ReflectionHelper.cs" />
-    <Compile Include="HIP\HIPContributionCandidate.cs" />
-    <Compile Include="MonoBehaviours\UpdateMonoBehaviour.cs" />
-    <Compile Include="Patches\Application\TarkovApplication_Init.cs" />
     <Compile Include="Patches\Hideout\HideoutClass_SetInventoryController.cs" />
     <Compile Include="Patches\View\HideoutProductionRequirementView_Show.cs" />
     <Compile Include="Patches\View\ProduceView_Close.cs" />
@@ -127,8 +123,6 @@
     <Compile Include="Patches\View\ProduceView_Update.cs" />
     <Compile Include="Patches\View\ProduceView_UpdateView.cs" />
     <Compile Include="Patches\View\ProductionPanel_Show.cs" />
-    <Compile Include="Patches\View\SimpleStashPanel_Close.cs" />
-    <Compile Include="Patches\View\SimpleStashPanel_Show.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Production\ProductionBuild.cs" />
     <Compile Include="Production\ProductionService.cs" />

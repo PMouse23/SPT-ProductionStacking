@@ -4,9 +4,9 @@ using EFT.Hideout;
 using EFT.InventoryLogic;
 using EFT.UI;
 using HarmonyLib;
-using HideoutAutomation.Extensions;
-using HideoutAutomation.Helpers;
 using HideoutAutomation.Production;
+using ProductionStacking.Extensions;
+using ProductionStacking.Helpers;
 using SPT.Reflection.Patching;
 using System;
 using System.Collections.Generic;
@@ -92,9 +92,6 @@ namespace HideoutAutomation.Patches.View
         {
             try
             {
-                if (Globals.ProductionStacking == false)
-                    return;
-
                 ProduceView produceView = __instance;
                 if (produceView == null)
                     return;

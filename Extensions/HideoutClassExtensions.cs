@@ -2,21 +2,21 @@
 
 #nullable enable
 
-using HideoutAutomation.Helpers;
+using EFT.Hideout;
 using ProductionStacking.Helpers;
 
 namespace ProductionStacking.Extensions
 {
     internal static class HideoutClassExtensions
     {
-        public static void StartProducing(this HideoutClass hideoutClass, ProductionBuildAbstractClass scheme)
+        public static void StartProducing(this HideoutRepresentation hideoutClass, BaseHideoutScheme scheme)
         {
             string schemeId = scheme._id;
             if (schemeId == null)
                 return;
             if (Globals.Debug)
                 LogHelper.LogInfoWithNotification($"TryStartProducing {schemeId}.");
-            foreach (var kvp in hideoutClass.ProductionController.Dictionary_0)
+            foreach (var kvp in hideoutClass.ProductionController._areaProducers)
                 foreach (var producer in kvp.Value)
                     if (producer.Schemes.ContainsKey(schemeId))
                     {

@@ -1,15 +1,15 @@
-﻿using HideoutAutomation;
+﻿using ProductionStacking;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SPT-HideoutAutomation")]
+[assembly: AssemblyTitle("SPT-ProductionStacking")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("KnotScripts")]
-[assembly: AssemblyProduct("HideoutAutomation")]
+[assembly: AssemblyProduct("ProductionStacking")]
 [assembly: AssemblyCopyright("Copyright © 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

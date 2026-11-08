@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using Microsoft.Extensions.DependencyInjection;
 using SPTarkov.Reflection.Patching;
 using SPTarkov.Server.Core.Controllers;
 using SPTarkov.Server.Core.DI;
@@ -13,7 +12,7 @@ namespace ProductionStacking.Server.Patches
         [PatchPostfix]
         public static void PatchPostfix(MongoId sessionId)
         {
-            if (ServiceLocator.ServiceProvider.GetService<ProductionStackingService>() is ProductionStackingService automationService)
+            if (ModServices.Get<ProductionStackingService>() is ProductionStackingService automationService)
                 automationService.StartFromStack(sessionId);
         }
 

@@ -1,13 +1,13 @@
 ﻿using Comfort.Common;
 using EFT.Hideout;
 using HarmonyLib;
-using HideoutAutomation.Production;
+using ProductionStacking.Production;
 using ProductionStacking.Helpers;
 using SPT.Reflection.Patching;
 using System;
 using System.Reflection;
 
-namespace HideoutAutomation.Patches.View
+namespace ProductionStacking.Patches.View
 {
     internal class ProduceView_Show : ModulePatch
     {

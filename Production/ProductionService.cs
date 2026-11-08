@@ -1,8 +1,8 @@
 ﻿using Comfort.Common;
 using EFT;
 using EFT.Hideout;
-using HideoutAutomation.Production.Requests;
-using HideoutAutomation.Production.Responses;
+using ProductionStacking.Production.Requests;
+using ProductionStacking.Production.Responses;
 using Newtonsoft.Json;
 using ProductionStacking.Extensions;
 using ProductionStacking.Helpers;
@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 #nullable enable
 
-namespace HideoutAutomation.Production
+namespace ProductionStacking.Production
 {
     internal class ProductionService
     {
@@ -22,7 +22,7 @@ namespace HideoutAutomation.Production
 
         public ProductionService()
         {
-            Singleton<HideoutClass>.Instance.ProductionController.OnProductionComplete += async (obj) =>
+            Singleton<HideoutRepresentation>.Instance.ProductionController.OnProductionComplete += async (obj) =>
             {
                 try
                 {
@@ -46,7 +46,7 @@ namespace HideoutAutomation.Production
                         LogHelper.LogInfoWithNotification($"{areaType} GetProducedItems {completedSchemeId}.");
                     bool showItemsListWindow = false;
                     if (this.CanFindProduction(completedSchemeId))
-                        await Singleton<HideoutClass>.Instance.GetProducedItems(producer, completedSchemeId, showItemsListWindow);
+                        await Singleton<HideoutRepresentation>.Instance.GetProducedItems(producer, completedSchemeId, showItemsListWindow);
                     producer.GetItems(completedSchemeId);
                     int count = this.GetAreaCount(areaType);
                     if (count > 0)
@@ -56,7 +56,7 @@ namespace HideoutAutomation.Production
                             LogHelper.LogInfoWithNotification($"GetAreaCount {count}.");
                         ProductionBuild? next = await this.startFromStack(areaType);
                         if (next != null)
-                            Singleton<HideoutClass>.Instance.StartProducing(next);
+                            Singleton<HideoutRepresentation>.Instance.StartProducing(next);
                     }
 
                     await this.GetState();
@@ -130,7 +130,7 @@ namespace HideoutAutomation.Production
                 produceView.UpdateView();
         }
 
-        private static bool isContinuousScheme(GClass2431 producer, string completedSchemeId)
+        private static bool isContinuousScheme(ItemsProducerBase producer, string completedSchemeId)
         {
             return producer.Schemes.ContainsKey(completedSchemeId) && producer.Schemes[completedSchemeId].continuous;
         }

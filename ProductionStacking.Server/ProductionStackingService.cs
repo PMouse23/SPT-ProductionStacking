@@ -2,15 +2,16 @@
 using ProductionStacking.Server.Stores;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.Controllers;
-using SPTarkov.Server.Core.Helpers;
+using SPTarkov.Server.Core.Helpers.Profile;
+using SPTarkov.Server.Core.Helpers.Ragfair;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Eft.Hideout;
 using SPTarkov.Server.Core.Models.Eft.ItemEvent;
 using SPTarkov.Server.Core.Models.Enums.Hideout;
+using SPTarkov.Server.Core.Models.Spt.Tables;
 using SPTarkov.Server.Core.Routers;
-using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.Utils.Cloners;
 using System;
 using System.Collections.Generic;
@@ -22,8 +23,8 @@ namespace ProductionStacking.Server
     [Injectable(InjectionType = InjectionType.Singleton)]
     public class ProductionStackingService(
         ProfileHelper profileHelper,
-        HideoutAutomationStore hideoutAutomationStore,
-        DatabaseService databaseService,
+        ProductionStackingStore productionStackingStore,
+        HideoutTable hideoutTable,
         HideoutController hideoutController,
         HideoutHelper hideoutHelper,
         InventoryHelper inventoryHelper,
@@ -51,10 +52,10 @@ namespace ProductionStacking.Server
 
         public IEnumerable<MongoId> CompletedProductions(PmcData pmcData)
         {
-            ProductionStackingData? hideoutAutomationData = this.GetHideoutAutomationData(pmcData);
-            if (hideoutAutomationData == null)
+            ProductionStackingData? productionStackingData = this.GetProductionStackingData(pmcData);
+            if (productionStackingData == null)
                 return [];
-            return hideoutAutomationData.CompletedProductions.ToArray().Select(production => production.RecipeId);
+            return productionStackingData.CompletedProductions.ToArray().Select(production => production.RecipeId);
         }
 
         public HideoutProduction? GetHideoutProduction(MongoId recipeId)
@@ -68,7 +69,7 @@ namespace ProductionStacking.Server
             PmcData? pmcData = profileHelper.GetPmcProfile(sessionId);
             if (pmcData == null)
                 return ValueTask.FromResult(stateResponse);
-            ProductionStackingData? data = this.GetHideoutAutomationData(sessionId);
+            ProductionStackingData? data = this.GetProductionStackingData(sessionId);
             if (data == null)
                 return ValueTask.FromResult(stateResponse);
             IEnumerable<IGrouping<MongoId, ProductionStartRequestAndPaymentData>> stacked = data.AreaProductionsAndPayment
@@ -95,7 +96,7 @@ namespace ProductionStacking.Server
         {
             if (pmcData.Id is not MongoId profileId)
                 return null;
-            ProductionStackingData? data = this.GetHideoutAutomationData(pmcData);
+            ProductionStackingData? data = this.GetProductionStackingData(pmcData);
             if (data == null)
                 return null;
             if (data.AreaProductionsAndPayment.TryGetValue(area, out LinkedList<ProductionStartRequestAndPaymentData>? values) == false)
@@ -123,18 +124,18 @@ namespace ProductionStacking.Server
             if (hideoutProduction == null || hideoutProduction.Requirements == null)
                 return null;
             hideoutController.SingleProductionStart(pmcData, startRequestData, sessionId);
-            hideoutAutomationStore.Set(profileId);
+            productionStackingStore.Set(profileId);
             return startRequestData;
         }
 
         public void RemoveCompletedProductions(PmcData pmcData)
         {
-            ProductionStackingData? hideoutAutomationData = this.GetHideoutAutomationData(pmcData);
-            if (hideoutAutomationData != null)
-                hideoutAutomationData.CompletedProductions.Clear();
+            ProductionStackingData? productionStackingData = this.GetProductionStackingData(pmcData);
+            if (productionStackingData != null)
+                productionStackingData.CompletedProductions.Clear();
             if (pmcData.Id is not MongoId profileId)
                 return;
-            hideoutAutomationStore.Set(profileId);
+            productionStackingStore.Set(profileId);
         }
 
         public bool ShouldStack(MongoId sessionId, PmcData pmcData, HideoutSingleProductionStartRequestData requestData)
@@ -167,7 +168,7 @@ namespace ProductionStacking.Server
             HideoutAreas? area = this.getHideoutArea(recipeId);
             if (area == null)
                 return ValueTask.FromResult(false);
-            ProductionStackingData? data = this.GetHideoutAutomationData(sessionId);
+            ProductionStackingData? data = this.GetProductionStackingData(sessionId);
             if (data == null)
                 return ValueTask.FromResult(false);
 
@@ -191,7 +192,7 @@ namespace ProductionStacking.Server
                 RequestData = requestData,
                 PaymentItems = [.. items]
             });
-            hideoutAutomationStore.Set(profileId);
+            productionStackingStore.Set(profileId);
             return ValueTask.FromResult(true);
         }
 
@@ -200,7 +201,7 @@ namespace ProductionStacking.Server
             PmcData? pmcData = profileHelper.GetPmcProfile(sessionId);
             if (pmcData == null)
                 return;
-            IEnumerable<HideoutAreas?> areas = databaseService.GetHideout().Areas.Select(a => a.Type);
+            IEnumerable<HideoutAreas?> areas = hideoutTable.Areas.Select(a => a.Type);
             foreach (HideoutAreas? area in areas)
             {
                 if (area is null)
@@ -243,7 +244,7 @@ namespace ProductionStacking.Server
             HideoutAreas? area = this.getHideoutArea(recipeId);
             if (area == null)
                 return ValueTask.FromResult(false);
-            ProductionStackingData? data = this.GetHideoutAutomationData(sessionId);
+            ProductionStackingData? data = this.GetProductionStackingData(sessionId);
             if (data == null)
                 return ValueTask.FromResult(false);
             if (data.AreaProductionsAndPayment.TryGetValue(area.Value, out LinkedList<ProductionStartRequestAndPaymentData>? values) == false)
@@ -259,7 +260,7 @@ namespace ProductionStacking.Server
             List<Item> itemsToReturn = unstacked.PaymentItems;
             ragfairServerHelper.ReturnItems(sessionId, itemsToReturn);
             values.Remove(unstacked);
-            hideoutAutomationStore.Set(profileId);
+            productionStackingStore.Set(profileId);
             return ValueTask.FromResult(true);
         }
 
@@ -267,7 +268,7 @@ namespace ProductionStacking.Server
         {
             if (pmcData == null)
                 return;
-            ProductionStackingData? data = this.GetHideoutAutomationData(pmcData);
+            ProductionStackingData? data = this.GetProductionStackingData(pmcData);
             if (data == null)
                 return;
             long currentTimeStamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
@@ -318,7 +319,7 @@ namespace ProductionStacking.Server
                     data.CompletedProductions.AddRange(completedProductions);
             }
             if (pmcData.Id is MongoId profileId)
-                hideoutAutomationStore.Set(profileId);
+                productionStackingStore.Set(profileId);
         }
 
         private bool areaIsProducing(MongoId sessionId, HideoutAreas area)
@@ -358,25 +359,25 @@ namespace ProductionStacking.Server
             return this.getHideoutProduction(recipeId)?.AreaType;
         }
 
-        private ProductionStackingData? GetHideoutAutomationData(PmcData pmcData)
+        private ProductionStackingData? GetProductionStackingData(PmcData pmcData)
         {
             if (pmcData.Id is not MongoId profileId)
                 return null;
-            ProductionStackingData data = hideoutAutomationStore.Get(profileId);
+            ProductionStackingData data = productionStackingStore.Get(profileId);
             return data;
         }
 
-        private ProductionStackingData? GetHideoutAutomationData(MongoId sessionId)
+        private ProductionStackingData? GetProductionStackingData(MongoId sessionId)
         {
             PmcData? pmcData = profileHelper.GetPmcProfile(sessionId);
             if (pmcData == null)
                 return null;
-            return this.GetHideoutAutomationData(pmcData);
+            return this.GetProductionStackingData(pmcData);
         }
 
         private HideoutProduction? getHideoutProduction(MongoId recipeId)
         {
-            return databaseService.GetHideout().Production.Recipes?.FirstOrDefault(prod => prod.Id == recipeId);
+            return hideoutTable.Production.Recipes?.FirstOrDefault(prod => prod.Id == recipeId);
         }
 
         private IEnumerable<Item> takeItems(MongoId sessionId, PmcData pmcData, HideoutSingleProductionStartRequestData requestData, ProductionStackingData data)

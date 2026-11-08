@@ -1,8 +1,8 @@
 ﻿using EFT.Hideout;
 
-namespace HideoutAutomation.Production
+namespace ProductionStacking.Production
 {
-    internal class ProductionBuild : ProductionBuildAbstractClass
+    internal class ProductionBuild : BaseHideoutScheme
     {
         public int AreaType
         {

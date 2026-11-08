@@ -4,7 +4,7 @@ using SPT.Reflection.Patching;
 using System.Reflection;
 using UnityEngine;
 
-namespace HideoutAutomation.Patches.View
+namespace ProductionStacking.Patches.View
 {
     internal class HideoutProductionRequirementView_Show : ModulePatch
     {

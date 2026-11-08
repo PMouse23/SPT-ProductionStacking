@@ -80,7 +80,7 @@
       <HintPath>Libraries\BepInEx\core\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="ConfigurationManager">
-      <HintPath>Libraries\BepInEx\plugins\spt\ConfigurationManager.dll</HintPath>
+      <HintPath>Libraries\BepInEx\plugins\spt\ConfigurationManager\ConfigurationManager.dll</HintPath>
     </Reference>
     <Reference Include="spt-common">
       <HintPath>Libraries\BepInEx\plugins\spt\spt-common.dll</HintPath>
@@ -147,7 +147,8 @@
 if $(ConfigurationName) == Debug (
       copy "$(TargetDir)$(TargetName).pdb" "D:\Offline\BepInEx\plugins\$(TargetName).pdb"
 ) else (
-      copy "$(TargetPath)" "D:\SOURCE\KnotScripts\Releases\HideoutAutomation\BepInEx\plugins\$(TargetName).dll"
+      if not exist "D:\SOURCE\KnotScripts\Releases\ProductionStacking\BepInEx\plugins" mkdir "D:\SOURCE\KnotScripts\Releases\ProductionStacking\BepInEx\plugins"
+      copy "$(TargetPath)" "D:\SOURCE\KnotScripts\Releases\ProductionStacking\BepInEx\plugins\$(TargetName).dll"
 )
 </PostBuildEvent>
   </PropertyGroup>

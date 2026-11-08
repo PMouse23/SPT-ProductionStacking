@@ -2,11 +2,11 @@
 using EFT.Hideout;
 using EFT.UI;
 using HarmonyLib;
-using HideoutAutomation.Production;
+using ProductionStacking.Production;
 using SPT.Reflection.Patching;
 using System.Reflection;
 
-namespace HideoutAutomation.Patches.View
+namespace ProductionStacking.Patches.View
 {
     internal class ProduceView_Update : ModulePatch
     {

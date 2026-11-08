@@ -1,6 +1,6 @@
 ﻿using EFT;
 
-namespace HideoutAutomation.Production.Requests
+namespace ProductionStacking.Production.Requests
 {
     internal struct NextProductionRequest
     {

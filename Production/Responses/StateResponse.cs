@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable enable
 
-namespace HideoutAutomation.Production.Responses
+namespace ProductionStacking.Production.Responses
 {
     internal struct StateResponse
     {

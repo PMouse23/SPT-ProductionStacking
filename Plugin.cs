@@ -1,12 +1,12 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
-using HideoutAutomation.Patches.Hideout;
-using HideoutAutomation.Patches.View;
+using ProductionStacking.Patches.Hideout;
+using ProductionStacking.Patches.View;
 using ProductionStacking.Helpers;
 using System;
 using UnityEngine;
 
-namespace HideoutAutomation
+namespace ProductionStacking
 {
     [BepInPlugin("com.KnotScripts.ProductionStacking", "ProductionStacking", VERSION)]
     public class Plugin : BaseUnityPlugin

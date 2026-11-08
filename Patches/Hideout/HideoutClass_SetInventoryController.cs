@@ -1,23 +1,24 @@
 ﻿using Comfort.Common;
+using EFT.Hideout;
 using HarmonyLib;
-using HideoutAutomation.Production;
+using ProductionStacking.Production;
 using ProductionStacking.Helpers;
 using SPT.Reflection.Patching;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace HideoutAutomation.Patches.Hideout
+namespace ProductionStacking.Patches.Hideout
 {
     internal class HideoutClass_SetInventoryController : ModulePatch
     {
         protected override MethodBase GetTargetMethod()
         {
-            return AccessTools.FirstMethod(typeof(HideoutClass), this.IsTargetMethod);
+            return AccessTools.FirstMethod(typeof(HideoutRepresentation), this.IsTargetMethod);
         }
 
         [PatchPostfix]
-        private static async void PatchPostfix(HideoutClass __instance)
+        private static async void PatchPostfix(HideoutRepresentation __instance)
         {
             if (Singleton<ProductionService>.Instance != null)
                 return;
@@ -42,7 +43,7 @@ namespace HideoutAutomation.Patches.Hideout
         private bool IsTargetMethod(MethodInfo method)
         {
             ParameterInfo[] parameters = method.GetParameters();
-            return method.Name == nameof(HideoutClass.SetInventoryController)
+            return method.Name == nameof(HideoutRepresentation.SetInventoryController)
                 && parameters.Length != 1;
         }
     }

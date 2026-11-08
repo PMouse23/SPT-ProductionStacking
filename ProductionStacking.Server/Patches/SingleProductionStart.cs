@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using Microsoft.Extensions.DependencyInjection;
 using SPTarkov.Reflection.Patching;
 using SPTarkov.Server.Core.Controllers;
 using SPTarkov.Server.Core.DI;
@@ -16,7 +15,7 @@ namespace ProductionStacking.Server.Patches
         public static bool PatchPrefix(PmcData pmcData, HideoutSingleProductionStartRequestData request, MongoId sessionID)
         {
             bool result = true;
-            if (ServiceLocator.ServiceProvider.GetService<ProductionStackingService>() is ProductionStackingService automationService)
+            if (ModServices.Get<ProductionStackingService>() is ProductionStackingService automationService)
             {
                 bool shouldStack = automationService.ShouldStack(sessionID, pmcData, request);
                 if (shouldStack)

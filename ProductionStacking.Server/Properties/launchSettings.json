@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "HideoutAutomation.Server": {
+    "ProductionStacking.Server": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
@@ -10,8 +10,8 @@
     },
     "SPT.Server.exe": {
       "commandName": "Executable",
-      "executablePath": "D:\\Offline\\SPT\\SPT.Server.exe",
-      "workingDirectory": "D:\\Offline\\SPT",
+      "executablePath": "D:\\Offline\\SPT_Runtime\\SPT.Server.exe",
+      "workingDirectory": "D:\\Offline\\SPT_Runtime",
       "nativeDebugging": false
     }
   }

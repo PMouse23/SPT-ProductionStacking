@@ -1,6 +1,6 @@
 ﻿using BepInEx.Bootstrap;
 
-namespace HideoutAutomation.Helpers
+namespace ProductionStacking.Helpers
 {
     internal class ModChecker
     {

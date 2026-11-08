@@ -1,15 +1,13 @@
 ﻿using HarmonyLib;
-using Microsoft.Extensions.DependencyInjection;
 using SPTarkov.Reflection.Patching;
 using SPTarkov.Server.Core.Controllers;
-using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Extensions;
-using SPTarkov.Server.Core.Helpers;
+using SPTarkov.Server.Core.Helpers.Items;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Eft.Hideout;
-using SPTarkov.Server.Core.Services;
+using SPTarkov.Server.Core.Models.Spt.Tables;
 using SPTarkov.Server.Core.Utils.Cloners;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,15 +23,13 @@ namespace ProductionStacking.Server.Patches
             PmcData? pmcData = HandleRecipe.LastCalledPmcData;
             if (pmcData == null)
                 return;
-            if (ServiceLocator.ServiceProvider.GetService<ProductionStackingService>() is not ProductionStackingService hideoutAutomationService)
+            if (ModServices.Get<ProductionStackingService>() is not ProductionStackingService productionStackingService)
                 return;
-            if (ServiceLocator.ServiceProvider.GetService<HideoutController>() is not HideoutController hideoutController)
+            if (ModServices.Get<HideoutController>() is not HideoutController hideoutController)
                 return;
-            if (ServiceLocator.ServiceProvider.GetService<DatabaseService>() is not DatabaseService databaseService)
+            if (ModServices.Get<HideoutTable>() is not HideoutTable hideoutDb)
                 return;
-            if (databaseService.GetHideout() is not SPTarkov.Server.Core.Models.Spt.Hideout.Hideout hideoutDb)
-                return;
-            IEnumerable<MongoId> completedProductions = hideoutAutomationService.CompletedProductions(pmcData);
+            IEnumerable<MongoId> completedProductions = productionStackingService.CompletedProductions(pmcData);
             foreach (MongoId recipeId in completedProductions)
             {
                 HideoutProduction? extra = hideoutDb.Production.Recipes?.FirstOrDefault(r => r.Id == recipeId);
@@ -46,7 +42,7 @@ namespace ProductionStacking.Server.Patches
                     itemAndChildrenToSendToPlayer.AddRange(extraItemAndChildrenToSendToPlayer);
                 }
             }
-            hideoutAutomationService.RemoveCompletedProductions(pmcData);
+            productionStackingService.RemoveCompletedProductions(pmcData);
         }
 
         /// <summary>
@@ -54,9 +50,9 @@ namespace ProductionStacking.Server.Patches
         /// </summary>
         protected static List<List<Item>> HandlePresetReward(HideoutProduction recipe)
         {
-            if (ServiceLocator.ServiceProvider.GetService<PresetHelper>() is not PresetHelper presetHelper)
+            if (ModServices.Get<PresetHelper>() is not PresetHelper presetHelper)
                 return [];
-            if (ServiceLocator.ServiceProvider.GetService<ICloner>() is not ICloner cloner)
+            if (ModServices.Get<ICloner>() is not ICloner cloner)
                 return [];
             Preset? defaultPreset = presetHelper.GetDefaultPreset(recipe.EndProduct);
             if (defaultPreset == null)
@@ -72,9 +68,9 @@ namespace ProductionStacking.Server.Patches
 
         protected static void UnstackRewardIntoValidSize2(HideoutProduction recipe, List<List<Item>> itemAndChildrenToSendToPlayer, bool rewardIsPreset)
         {
-            if (ServiceLocator.ServiceProvider.GetService<ItemHelper>() is not ItemHelper itemHelper)
+            if (ModServices.Get<ItemHelper>() is not ItemHelper itemHelper)
                 return;
-            if (ServiceLocator.ServiceProvider.GetService<ICloner>() is not ICloner cloner)
+            if (ModServices.Get<ICloner>() is not ICloner cloner)
                 return;
             var rewardIsStackable = itemHelper.IsItemTplStackable(recipe.EndProduct);
             if (rewardIsStackable.GetValueOrDefault(false))
